@@ -44,7 +44,7 @@ class SoundEngine {
       'page-turn': '/audio/page-turn.mp3',
       'paper-open': '/audio/paper-open.mp3',
       'paper-fold': '/audio/paper-fold.mp3',
-      ambient: '/audio/amaran-sai-pallavi-intro.m4a'
+      ambient: '/audio/ennavale-adi-ennavale.mp3'
     };
 
     Object.entries(files).forEach(([key, src]) => {
@@ -56,7 +56,7 @@ class SoundEngine {
           audio.loop = true;
           audio.volume = this.volume;
           audio.onerror = () => {
-            if (audio.src.indexOf('amaran-sai-pallavi-intro.m4a') !== -1) {
+            if (audio.src.indexOf('ennavale-adi-ennavale.mp3') !== -1) {
               audio.src = '/audio/ambient.mp3';
               audio.load();
               if (this.isAmbientPlaying && !this.isMuted) {
