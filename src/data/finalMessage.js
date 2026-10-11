@@ -7,17 +7,20 @@
 
 export const finalMessageData = {
   // Opening lead-in sentence
-  leadIn: "There's one last thing I want you to know...",
+  leadIn: "First ivlo thooram vanthathuku Nandrii ! ✨",
 
-  // Main personal message paragraphs (Tamil or English)
+  // Main personal message paragraphs
   paragraphs: [
-    "Thank you for opening this letter and reading through each page with patience.",
-    "Everything written here comes from an honest and genuine place in my heart.",
-    "En manasula irukkuradha unga kitta sollanumnu thonuchu..."
+    "Naa unga kita sollanum nencha ellarathaium pathrupinga nu namburen.",
+    "Etho enakku therinja alavuku naa itha ready panni iruken, aana ithula iruka ellamey en idea apro oru oru kavithaium naa eluthunathu.",
+    "And finally naa enna solla varen naa..."
   ],
 
-  // Optional highlighted line in the final message
-  highlightedLine: "You truly mean a lot to me.",
+  // Prominent highlighted line
+  highlightedLine: "“I WANT TO LIVE A LIFE ALONG WITH YOU”",
+
+  // Sincere thank you note
+  thankYouText: "Thank You ❤️",
 
   // Personal handwritten signature
   signatureText: "— Lokesh",

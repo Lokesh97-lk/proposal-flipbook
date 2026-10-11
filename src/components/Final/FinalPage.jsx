@@ -90,6 +90,21 @@ export default function FinalPage({ onCloseLetter, onPlayClick }) {
 
           {/* Sincere Signature Area */}
           <div className="final-signature-wrapper">
+            {finalMessageData.thankYouText && (
+              <span
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '0.98rem',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--ink-secondary)',
+                  marginBottom: '2px',
+                  fontWeight: 600
+                }}
+              >
+                {finalMessageData.thankYouText}
+              </span>
+            )}
             {finalMessageData.signatureImage && (
               <img
                 src={finalMessageData.signatureImage}

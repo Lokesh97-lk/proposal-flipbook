@@ -11,7 +11,7 @@ class SoundEngine {
     this.ambientGain = null;
     this.sfxGain = null;
     this.isMuted = false;
-    this.volume = 0.4;
+    this.volume = 0.48;
     this.audioElements = {};
     this.ambientTimer = null;
     this.isAmbientPlaying = false;
@@ -44,7 +44,7 @@ class SoundEngine {
       'page-turn': '/audio/page-turn.mp3',
       'paper-open': '/audio/paper-open.mp3',
       'paper-fold': '/audio/paper-fold.mp3',
-      ambient: '/audio/ambient.mp3'
+      ambient: '/audio/amaran-sai-pallavi-intro.m4a'
     };
 
     Object.entries(files).forEach(([key, src]) => {
@@ -55,6 +55,15 @@ class SoundEngine {
         if (key === 'ambient') {
           audio.loop = true;
           audio.volume = this.volume;
+          audio.onerror = () => {
+            if (audio.src.indexOf('amaran-sai-pallavi-intro.m4a') !== -1) {
+              audio.src = '/audio/ambient.mp3';
+              audio.load();
+              if (this.isAmbientPlaying && !this.isMuted) {
+                audio.play().catch(() => {});
+              }
+            }
+          };
         }
         this.audioElements[key] = audio;
       } catch (e) {

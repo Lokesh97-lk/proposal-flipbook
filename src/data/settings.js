@@ -17,7 +17,7 @@ export const settingsData = {
 
   // Audio settings
   audio: {
-    ambientVolume: 0.35,
+    ambientVolume: 0.48,
     sfxVolume: 0.5,
     defaultMuted: false
   },
