@@ -1,0 +1,23 @@
+.page03-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page03-journal-lines {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(160, 130, 95, 0.15) 31px,
+    rgba(160, 130, 95, 0.15) 32px
+  );
+  padding: 12px 6px;
+  line-height: 32px !important;
+}
+
+.page03-handwritten-primary {
+  font-family: var(--font-script);
+  font-size: 1.85rem;
+  line-height: 1.45;
+  color: var(--ink-accent);
+}

@@ -1,0 +1,121 @@
+/* Responsive Adjustments */
+
+@media (max-width: 1024px) {
+  :root {
+    --letter-width: 480px;
+    --letter-height: 640px;
+  }
+
+  .page-title {
+    font-size: 1.95rem;
+  }
+
+  .page-body {
+    font-size: 1.1rem;
+    gap: 12px;
+  }
+
+  .page-wrapper {
+    padding: 36px 38px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --letter-width: 90vw;
+    --letter-height: 75vh;
+    --letter-folded-width: 280px;
+    --letter-folded-height: 210px;
+  }
+
+  .moonlight-beam {
+    width: 100vw;
+    height: 100vw;
+  }
+
+  .page-wrapper {
+    padding: 24px 22px;
+  }
+
+  .page-title {
+    font-size: 1.65rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .page-body {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    gap: 10px;
+  }
+
+  .handwritten-note {
+    font-size: 1.25rem;
+  }
+
+  .polaroid-card {
+    max-width: 220px;
+    padding: 8px 8px 20px 8px;
+  }
+
+  .polaroid-caption {
+    font-size: 1.05rem;
+  }
+
+  .milestones-container {
+    gap: 8px;
+  }
+
+  .milestone-text {
+    font-size: 0.9rem;
+  }
+
+  .proposal-confession {
+    font-size: 1.8rem;
+  }
+
+  .proposal-question {
+    font-size: 1.15rem;
+  }
+
+  .answer-options-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .answer-btn {
+    width: 100%;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --letter-width: 94vw;
+    --letter-height: 80vh;
+  }
+
+  .page-wrapper {
+    padding: 20px 18px;
+  }
+
+  .page-title {
+    font-size: 1.45rem;
+  }
+
+  .page-dropcap::first-letter {
+    font-size: 2.4rem;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

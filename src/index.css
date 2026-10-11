@@ -1,0 +1,8 @@
+@import './styles/variables.css';
+@import './styles/global.css';
+@import './styles/paper.css';
+@import './styles/flipbook.css';
+@import './styles/animations.css';
+@import './styles/passwordGate.css';
+@import './styles/responsive.css';
+@import './styles/mobile.css';

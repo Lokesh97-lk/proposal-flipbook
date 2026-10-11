@@ -1,0 +1,83 @@
+/* Keyframe Animations */
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(230, 185, 105, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(230, 185, 105, 0.45);
+  }
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes floatDust {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-25px) translateX(12px);
+  }
+  100% {
+    transform: translateY(-50px) translateX(-8px);
+    opacity: 0;
+  }
+}
+
+@keyframes clickRipple {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.ripple-circle {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(230, 185, 105, 0.7);
+  pointer-events: none;
+  animation: clickRipple 0.5s ease-out forwards;
+}
+
+/* Origami fold quadrants for 3D Unfold/Fold */
+.fold-section {
+  position: absolute;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  background-color: var(--paper-cream);
+}
+
+.fold-bottom-left {
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: bottom left;
+  border-right: 1px solid rgba(160, 130, 100, 0.25);
+  border-top: 1px solid rgba(160, 130, 100, 0.25);
+}
+
+.fold-top-right {
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: top right;
+  border-left: 1px solid rgba(160, 130, 100, 0.25);
+  border-bottom: 1px solid rgba(160, 130, 100, 0.25);
+}

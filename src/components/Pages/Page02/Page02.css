@@ -1,0 +1,11 @@
+.page02-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.page02-polaroid-section {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
+}

@@ -1,0 +1,14 @@
+.page01-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.page01-ornament {
+  width: 48px;
+  height: 1px;
+  background: var(--ink-gold);
+  margin: 16px 0;
+  opacity: 0.6;
+}

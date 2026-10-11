@@ -1,0 +1,559 @@
+@import './variables.css';
+
+/* Flipbook Stage Container */
+.flipbook-container {
+  position: relative;
+  width: min(var(--letter-width), 92vw);
+  height: min(var(--letter-height), 92vh);
+  aspect-ratio: 520 / 720;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+  margin: 0 auto;
+}
+
+/* Individual Reading Page */
+.flipbook-page {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--paper-cream);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 12px 32px -8px rgba(0, 0, 0, 0.45),
+    0 24px 65px -12px rgba(0, 0, 0, 0.55),
+    inset 0 0 40px rgba(160, 130, 90, 0.14);
+  border: 1px solid var(--paper-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform-style: preserve-3d;
+}
+
+/* Background Artwork Layer */
+.page-bg-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-bg-backdrop {
+  position: absolute;
+  inset: -24px;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  object-fit: cover;
+  object-position: center;
+  filter: blur(24px) brightness(1.02);
+  opacity: 0.52;
+  transform: scale(1.1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.page-bg-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  opacity: 1;
+  z-index: 2;
+  filter: contrast(1.02);
+}
+
+/* Soft paper texture wash over image */
+.page-bg-wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(250, 245, 235, 0.05) 0%, rgba(240, 230, 215, 0.18) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Left spine shadow to simulate bound paper */
+.page-spine-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 24px;
+  background: linear-gradient(to right, rgba(40, 30, 20, 0.18) 0%, rgba(40, 30, 20, 0.04) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 8;
+}
+
+/* Content Layer Over the Artwork */
+.page-content-layer {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 44px 44px 20px 44px;
+}
+
+/* Placement variants to preserve illustration composition */
+.placement-center {
+  align-items: center;
+  text-align: center;
+}
+
+.placement-center-right {
+  align-items: flex-end;
+  text-align: right;
+  padding-left: 28%;
+}
+
+.placement-bottom {
+  justify-content: flex-end;
+  padding-bottom: 24px;
+  text-align: left;
+}
+
+.placement-bottom-accent {
+  justify-content: flex-end;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+/* Page Typography */
+.page-header {
+  margin-bottom: 18px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  color: var(--ink-primary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.page-subtitle {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--ink-secondary);
+}
+
+.page-body-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 440px;
+}
+
+.page-paragraph {
+  font-family: var(--font-tamil), var(--font-serif);
+  font-size: 1.08rem;
+  line-height: 1.72;
+  color: var(--ink-primary);
+  letter-spacing: 0.01em;
+}
+
+.highlighted-line {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--ink-accent);
+  margin-top: 14px;
+  line-height: 1.55;
+  border-left: 2px solid rgba(138, 72, 82, 0.4);
+  padding-left: 12px;
+}
+
+.placement-center-right .highlighted-line {
+  border-left: none;
+  border-right: 2px solid rgba(138, 72, 82, 0.4);
+  padding-left: 0;
+  padding-right: 12px;
+}
+
+.placement-center .highlighted-line,
+.placement-bottom-accent .highlighted-line {
+  border-left: none;
+  border-bottom: 1px solid rgba(138, 72, 82, 0.3);
+  padding-left: 0;
+  padding-bottom: 6px;
+  display: inline-block;
+}
+
+.handwritten-note {
+  font-family: var(--font-script);
+  font-size: 1.55rem;
+  color: var(--ink-accent);
+  margin-top: 16px;
+  transform: rotate(-1.5deg);
+  opacity: 0.92;
+}
+
+/* Discreet Bottom Navigation & Counter Footer */
+.flipbook-footer {
+  position: relative;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 28px 18px 28px;
+  background: linear-gradient(to top, rgba(250, 245, 235, 0.95) 0%, rgba(250, 245, 235, 0.6) 80%, transparent 100%);
+  border-top: 1px solid rgba(160, 130, 95, 0.18);
+}
+
+.nav-link-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  padding: 6px 8px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-link-btn:hover:not(:disabled) {
+  color: var(--ink-primary);
+  transform: translateY(-1px);
+}
+
+.nav-link-btn:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.nav-link-next {
+  color: var(--ink-accent);
+}
+
+.page-counter-text {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: var(--ink-muted);
+}
+
+/* 3D Page Turn Animation Leaf */
+.page-leaf-turning {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.page-leaf-front,
+.page-leaf-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: var(--paper-cream);
+}
+
+.page-leaf-back {
+  transform: rotateY(180deg);
+  background-color: var(--paper-shade);
+  border: 1px solid var(--paper-border);
+  box-shadow: inset 0 0 45px rgba(130, 95, 60, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-curl-shadow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.05) 35%,
+    rgba(0, 0, 0, 0.28) 75%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  z-index: 25;
+}
+
+/* Final Message Screen */
+.final-message-container {
+  position: relative;
+  width: min(var(--letter-width), 92vw);
+  height: min(var(--letter-height), 92vh);
+  aspect-ratio: 520 / 720;
+  background-color: var(--paper-cream);
+  border-radius: 4px;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 14px 38px -8px rgba(0, 0, 0, 0.5),
+    0 28px 70px -15px rgba(0, 0, 0, 0.6),
+    inset 0 0 50px rgba(160, 130, 90, 0.15);
+  border: 1px solid var(--paper-border);
+  padding: 48px 44px 36px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  text-align: center;
+}
+
+.final-lead-in {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-style: italic;
+  color: var(--ink-secondary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.final-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 440px;
+  margin: 0 auto 20px auto;
+}
+
+.final-signature-wrapper {
+  margin: 20px auto 14px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.final-signature-img {
+  max-height: 48px;
+  object-fit: contain;
+  opacity: 0.9;
+  filter: contrast(1.1);
+}
+
+.final-signature-text {
+  font-family: var(--font-script);
+  font-size: 1.45rem;
+  color: var(--ink-accent);
+}
+
+.close-letter-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(130, 95, 60, 0.25);
+  transition: all 0.25s ease;
+  margin: 0 auto;
+}
+
+.close-letter-btn:hover {
+  color: var(--ink-primary);
+  border-bottom-color: rgba(40, 25, 15, 0.7);
+  transform: translateY(-1px);
+}
+
+/* Special Page Pop-up Overlay (Page 2, Page 3, and upcoming pages) */
+.page-popup-overlay,
+.page2-popup-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14, 12, 10, 0.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 16px;
+}
+
+.page-popup-card,
+.page2-popup-card {
+  position: relative;
+  width: min(390px, 92vw);
+  min-height: min(580px, 86vh);
+  aspect-ratio: 576 / 940;
+  background-color: #f7f1e6;
+  background-image: url('/images/popup-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(175, 145, 110, 0.55);
+  border-radius: 12px;
+  padding: 72px 26px 72px 26px;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    0 25px 60px -12px rgba(25, 20, 15, 0.65),
+    inset 0 0 35px rgba(180, 150, 115, 0.15);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.page-popup-close-btn,
+.page2-popup-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(160, 130, 95, 0.35);
+  color: var(--ink-secondary);
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.page-popup-close-btn:hover,
+.page2-popup-close-btn:hover {
+  opacity: 1;
+  background-color: #ffffff;
+  color: var(--ink-primary);
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.page-popup-center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 320px;
+  z-index: 5;
+}
+
+.page-popup-tag,
+.page2-popup-tag {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-rose);
+  font-weight: 700;
+  margin-bottom: 14px;
+  opacity: 0.95;
+}
+
+.page-popup-tamil-text,
+.page2-popup-tamil-text {
+  font-family: var(--font-tamil), var(--font-serif);
+  font-size: 1.18rem;
+  line-height: 1.75;
+  color: var(--ink-primary);
+  letter-spacing: 0.02em;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  white-space: pre-line;
+}
+
+.page-popup-english-hint,
+.page2-popup-english-hint {
+  font-family: var(--font-serif);
+  font-size: 0.94rem;
+  font-style: italic;
+  color: var(--ink-secondary);
+  margin: 0 0 24px 0;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.page-popup-continue-btn,
+.page2-popup-continue-btn {
+  background: linear-gradient(135deg, #3d3027 0%, #291f19 100%);
+  color: #f7f1e6;
+  border: 1px solid rgba(200, 165, 115, 0.45);
+  border-radius: 4px;
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  padding: 10px 30px;
+  cursor: pointer;
+  box-shadow: 
+    0 3px 12px rgba(40, 30, 20, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transition: all 0.25s ease;
+}
+
+.page-popup-continue-btn:hover,
+.page2-popup-continue-btn:hover {
+  background: linear-gradient(135deg, #4f3f33 0%, #352922 100%);
+  border-color: rgba(225, 190, 135, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 5px 16px rgba(40, 30, 20, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+.page2-reopen-note-btn {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 25;
+  background: rgba(250, 245, 235, 0.92);
+  border: 1px solid rgba(160, 130, 95, 0.4);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s ease;
+}
+
+.page2-reopen-note-btn:hover {
+  background: #ffffff;
+  color: var(--ink-primary);
+  border-color: rgba(140, 105, 70, 0.65);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
