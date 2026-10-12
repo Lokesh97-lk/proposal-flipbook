@@ -45,7 +45,7 @@ class SoundEngine {
       'page-turn': '/audio/page-turn.mp3',
       'paper-open': '/audio/paper-open.mp3',
       'paper-fold': '/audio/paper-fold.mp3',
-      ambient: '/audio/muzumathi.mp3'
+      ambient: '/audio/muzumathi.mp3?v=20261012'
     };
 
     Object.entries(files).forEach(([key, src]) => {
@@ -58,7 +58,7 @@ class SoundEngine {
           audio.volume = this.volume;
           audio.onerror = () => {
             if (audio.src.indexOf('muzumathi.mp3') !== -1) {
-              audio.src = '/audio/ambient.mp3';
+              audio.src = '/audio/ambient.mp3?v=20261012';
               audio.load();
               if (this.isAmbientPlaying && !this.isMuted) {
                 audio.play().catch(() => {});
