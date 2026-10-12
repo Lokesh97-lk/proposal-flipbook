@@ -43,6 +43,11 @@ export function useAudio() {
     setIsPlayingAmbient(false);
   }, []);
 
+  const setMute = useCallback((muted) => {
+    const isNowMuted = soundEngine.setMute(muted);
+    setIsMuted(isNowMuted);
+  }, []);
+
   const toggleMute = useCallback(() => {
     const muted = soundEngine.toggleMute();
     setIsMuted(muted);
@@ -58,6 +63,7 @@ export function useAudio() {
     playUnlock,
     startAmbient,
     stopAmbient,
+    setMute,
     toggleMute
   };
 }

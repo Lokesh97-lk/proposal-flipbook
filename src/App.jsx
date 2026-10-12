@@ -13,6 +13,7 @@ import ClosedScene from './components/Closing/ClosedScene';
 // Subtle Controls
 import MusicButton from './components/UI/MusicButton';
 import PasswordGate from './components/UI/PasswordGate';
+import Cursor from './components/UI/Cursor';
 
 export default function App() {
   // Lock state at website start (Key: 0405 / DOB: DD/MM)
@@ -36,6 +37,8 @@ export default function App() {
     playPaperFold,
     playUnlock,
     startAmbient,
+    stopAmbient,
+    setMute,
     toggleMute
   } = useAudio();
 
@@ -89,6 +92,21 @@ export default function App() {
     setExperienceState('intro');
   }, [playClick]);
 
+  // Unlock after password verification & song choice
+  const handleUnlock = useCallback((options = {}) => {
+    try {
+      sessionStorage.setItem('proposal_flipbook_unlocked', 'true');
+    } catch {}
+    setIsUnlocked(true);
+
+    if (options.playMusic) {
+      setMute(false);
+      startAmbient();
+    } else if (options.playMusic === false) {
+      setMute(true);
+    }
+  }, [setMute, startAmbient]);
+
   // Lock the website again
   const handleLock = useCallback(() => {
     try {
@@ -112,6 +130,9 @@ export default function App() {
     >
       {/* Subtle Room Vignette */}
       <div className="room-vignette" />
+
+      {/* Romantic Custom Cursor for desktop */}
+      <Cursor />
 
       {/* Discreet Audio Toggle */}
       <MusicButton isMuted={isMuted} onToggle={toggleMute} />
@@ -151,7 +172,7 @@ export default function App() {
       {/* Gatekeeper Password Modal at Website Start */}
       {!isUnlocked && (
         <PasswordGate
-          onUnlock={() => setIsUnlocked(true)}
+          onUnlock={handleUnlock}
           onPlayUnlock={playUnlock}
           onPlayClick={playClick}
         />

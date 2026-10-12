@@ -20,62 +20,77 @@ export default function Flipbook({
   const [closedPopups, setClosedPopups] = useState({});
 
   const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
 
   const currentPageData = pagesData[currentPage - 1] || pagesData[0];
+  const isPopupOpen = Boolean(currentPageData?.popup && !closedPopups[currentPage]);
 
+  // Navigate to Next Page (1 -> 2 -> ... -> 6; strictly stops at page 6)
   const handleNext = useCallback(() => {
-    if (isTurning) return;
-    if (currentPage >= totalPages) {
-      if (onFinishLetter) onFinishLetter();
-      return;
-    }
+    if (isTurning || currentPage >= totalPages) return;
     setTurningContent(<PageRenderer page={pagesData[currentPage - 1]} />);
     setTurnDirection('next');
     setIsTurning(true);
     onNextPage();
-  }, [isTurning, currentPage, totalPages, onFinishLetter, onNextPage]);
+  }, [isTurning, currentPage, totalPages, onNextPage]);
 
+  // Navigate to Previous Page (stops at page 1)
   const handlePrev = useCallback(() => {
     if (isTurning || currentPage <= 1) return;
-    setTurningContent(<PageRenderer page={pagesData[currentPage - 1]} />);
+    setTurningContent(<PageRenderer page={pagesData[currentPage - 2] || pagesData[0]} />);
     setTurnDirection('prev');
     setIsTurning(true);
     onPrevPage();
   }, [isTurning, currentPage, onPrevPage]);
 
-  // Keyboard navigation
+  // Keyboard navigation: ArrowRight / ArrowLeft
   useKeyboard({
-    onNext: handleNext,
-    onPrev: handlePrev,
-    onAction: currentPage === totalPages ? onFinishLetter : handleNext,
-    enabled: !isTurning
+    onNext: currentPage < totalPages ? handleNext : null,
+    onPrev: currentPage > 1 ? handlePrev : null,
+    onEscape: () => {
+      if (isPopupOpen) {
+        setClosedPopups((prev) => ({ ...prev, [currentPage]: true }));
+      }
+    },
+    enabled: !isTurning && !isPopupOpen
   });
 
-  // Touch swipe support for mobile & tablet
+  // Touch swipe support for mobile & tablet (strictly horizontal, ignores diagonal scroll)
   const handleTouchStart = (e) => {
     if (e.touches && e.touches[0]) {
       touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
     }
   };
 
   const handleTouchEnd = (e) => {
-    if (touchStartX.current === null || isTurning) return;
-    const diff = e.changedTouches[0].clientX - touchStartX.current;
-    if (Math.abs(diff) > 45) {
-      if (diff < 0) {
-        // Swiped left -> next page
+    if (touchStartX.current === null || isTurning || isPopupOpen) return;
+    const diffX = e.changedTouches[0].clientX - touchStartX.current;
+    const diffY = e.changedTouches[0].clientY - (touchStartY.current ?? 0);
+
+    // Only trigger if horizontal swipe is clearly dominant over vertical scroll
+    if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX < 0 && currentPage < totalPages) {
+        // Swiped left -> next page (never skips page 6)
         handleNext();
-      } else if (diff > 0 && currentPage > 1) {
+      } else if (diffX > 0 && currentPage > 1) {
         // Swiped right -> previous page
         handlePrev();
       }
     }
     touchStartX.current = null;
+    touchStartY.current = null;
   };
 
   const isLastPage = currentPage === totalPages;
   const formattedPage = String(currentPage).padStart(2, '0');
   const formattedTotal = String(totalPages).padStart(2, '0');
+
+  const handleFinishAction = () => {
+    if (isTurning) return;
+    if (onPlayClick) onPlayClick();
+    if (onFinishLetter) onFinishLetter();
+  };
 
   return (
     <div
@@ -96,11 +111,11 @@ export default function Flipbook({
         <div className="flipbook-page">
           <PageRenderer page={currentPageData} />
 
-          {/* Special Page Confession Pop-up (Page 2, Page 3, and any upcoming page with a popup) */}
+          {/* Personal Note Pop-up (Pages with configured popup note) */}
           {currentPageData?.popup && !closedPopups[currentPage] && !isTurning && (
             <PagePopup
               popup={currentPageData.popup}
-              onClose={() => setClosedPopups(prev => ({ ...prev, [currentPage]: true }))}
+              onClose={() => setClosedPopups((prev) => ({ ...prev, [currentPage]: true }))}
               onPlayClick={onPlayClick || onPageTurnSound}
             />
           )}
@@ -110,7 +125,7 @@ export default function Flipbook({
             <button
               onClick={() => {
                 if (onPlayClick) onPlayClick();
-                setClosedPopups(prev => ({ ...prev, [currentPage]: false }));
+                setClosedPopups((prev) => ({ ...prev, [currentPage]: false }));
               }}
               className="page2-reopen-note-btn"
               title="Click to view personal note again"
@@ -132,7 +147,7 @@ export default function Flipbook({
               ← PREVIOUS
             </button>
 
-            <span className="page-counter-text">
+            <span className="page-counter-text" aria-live="polite">
               {formattedPage} / {formattedTotal}
             </span>
 
@@ -147,8 +162,8 @@ export default function Flipbook({
               </button>
             ) : (
               <button
-                className="nav-link-btn nav-link-next"
-                onClick={onFinishLetter}
+                className="nav-link-btn nav-link-next nav-link-final"
+                onClick={handleFinishAction}
                 disabled={isTurning}
                 style={{ fontWeight: 700 }}
                 aria-label="Read final message"

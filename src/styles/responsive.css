@@ -22,92 +22,102 @@
 
 @media (max-width: 768px) {
   :root {
-    --letter-width: 90vw;
-    --letter-height: 75vh;
+    --letter-width: 92vw;
+    --letter-height: 85vh;
     --letter-folded-width: 280px;
     --letter-folded-height: 210px;
   }
 
-  .moonlight-beam {
-    width: 100vw;
-    height: 100vw;
+  .page-popup-card,
+  .first-popup-card {
+    width: 90vw !important;
+    min-height: auto !important;
+    padding: clamp(36px, 6vh, 48px) 18px !important;
   }
 
-  .page-wrapper {
-    padding: 24px 22px;
+  .page-popup-tamil-text {
+    font-size: 1.05rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 8px !important;
   }
 
-  .page-title {
-    font-size: 1.65rem;
+  .page-popup-english-hint {
+    font-size: 0.88rem !important;
+    margin-bottom: 16px !important;
   }
 
-  .page-subtitle {
-    font-size: 0.95rem;
+  .first-popup-confession-text {
+    font-size: 1.1rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 8px !important;
   }
 
-  .page-body {
-    font-size: 0.98rem;
-    line-height: 1.55;
-    gap: 10px;
+  .first-popup-prompt-text {
+    font-size: 0.88rem !important;
+    margin-bottom: 14px !important;
   }
 
-  .handwritten-note {
-    font-size: 1.25rem;
+  .first-popup-tamil-subtext {
+    font-size: 0.82rem !important;
+    margin-top: 10px !important;
   }
 
-  .polaroid-card {
-    max-width: 220px;
-    padding: 8px 8px 20px 8px;
+  .final-lead-in {
+    font-size: 1.15rem !important;
+    margin-bottom: 14px !important;
   }
 
-  .polaroid-caption {
-    font-size: 1.05rem;
+  .final-paragraphs {
+    gap: 10px !important;
+    margin-bottom: 12px !important;
   }
 
-  .milestones-container {
-    gap: 8px;
+  .final-paragraphs .page-paragraph {
+    font-size: 0.94rem !important;
+    line-height: 1.55 !important;
   }
 
-  .milestone-text {
-    font-size: 0.9rem;
+  .highlighted-line {
+    font-size: 1.02rem !important;
+    margin-top: 10px !important;
   }
 
-  .proposal-confession {
-    font-size: 1.8rem;
+  .final-signature-wrapper {
+    margin: 10px auto 8px auto !important;
   }
 
-  .proposal-question {
-    font-size: 1.15rem;
+  .flipbook-footer {
+    padding: 10px 18px 14px 18px !important;
   }
 
-  .answer-options-group {
-    flex-direction: column;
-    width: 100%;
-    max-width: 260px;
-  }
-
-  .answer-btn {
-    width: 100%;
-    padding: 10px 16px;
+  .nav-link-btn {
+    font-size: 0.75rem !important;
+    letter-spacing: 0.12em !important;
   }
 }
 
 @media (max-width: 480px) {
   :root {
     --letter-width: 94vw;
-    --letter-height: 80vh;
+    --letter-height: 86vh;
   }
 
-  .page-wrapper {
-    padding: 20px 18px;
+  .page-popup-card,
+  .first-popup-card {
+    padding: 32px 14px !important;
   }
 
-  .page-title {
-    font-size: 1.45rem;
+  .page-popup-tamil-text {
+    font-size: 0.98rem !important;
   }
 
-  .page-dropcap::first-letter {
-    font-size: 2.4rem;
+  .first-popup-confession-text {
+    font-size: 1.02rem !important;
+  }
+
+  .click-to-read-message {
+    font-size: 1.12rem !important;
+    margin-bottom: 16px !important;
   }
 }
 

@@ -32,7 +32,7 @@ export default function PageRenderer({ page }) {
             className="page-bg-backdrop"
             draggable="false"
           />
-          {/* Main Full Artwork (contain ensures zero text/drawing cropping) */}
+          {/* Main Full Artwork (contain ensures zero text/drawing cropping or stretching) */}
           <img
             src={background}
             alt={alt || title || "Page illustration"}
@@ -47,7 +47,10 @@ export default function PageRenderer({ page }) {
       <div className="page-spine-shadow" />
 
       {/* Content Layer Over Artwork */}
-      <div className={`page-content-layer placement-${textPlacement}`} style={{ pointerEvents: preserveEmbeddedText ? 'none' : 'auto' }}>
+      <div
+        className={`page-content-layer placement-${textPlacement}`}
+        style={{ pointerEvents: preserveEmbeddedText ? 'none' : 'auto' }}
+      >
         {/* If preserveEmbeddedText is false, render typed paragraphs inside a gentle parchment card */}
         {!preserveEmbeddedText ? (
           <div
@@ -93,8 +96,10 @@ export default function PageRenderer({ page }) {
             )}
           </div>
         ) : (
-          /* For pages where poetry is already drawn inside the artwork, only render notes if explicitly provided */
-          (subtitle || handwrittenNote) ? (
+          /* For illustrated pages where Tamil verses are already hand-drawn in the artwork,
+             preserve the artwork cleanly without rendering duplicate text over the existing quote.
+             Only render notes if explicitly configured. */
+          handwrittenNote ? (
             <div
               style={{
                 position: 'relative',
@@ -105,16 +110,9 @@ export default function PageRenderer({ page }) {
                 marginBottom: '12px'
               }}
             >
-              {subtitle && (
-                <p className="page-subtitle" style={{ fontSize: '0.95rem', opacity: 0.85 }}>
-                  {subtitle}
-                </p>
-              )}
-              {handwrittenNote && (
-                <p className="handwritten-note" style={{ fontSize: '1.4rem', marginTop: '6px' }}>
-                  {handwrittenNote}
-                </p>
-              )}
+              <p className="handwritten-note" style={{ fontSize: '1.35rem' }}>
+                {handwrittenNote}
+              </p>
             </div>
           ) : null
         )}

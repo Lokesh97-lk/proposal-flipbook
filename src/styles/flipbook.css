@@ -3,9 +3,9 @@
 /* Flipbook Stage Container */
 .flipbook-container {
   position: relative;
-  width: min(var(--letter-width), 92vw);
-  height: min(var(--letter-height), 92vh);
+  width: min(var(--letter-width), 92vw, calc(90vh * 520 / 720));
   aspect-ratio: 520 / 720;
+  max-height: 90vh;
   perspective: 1800px;
   transform-style: preserve-3d;
   margin: 0 auto;
@@ -237,10 +237,17 @@
   opacity: 0.2;
   cursor: not-allowed;
   transform: none;
+  pointer-events: none;
 }
 
 .nav-link-next {
   color: var(--ink-accent);
+}
+
+.nav-link-final {
+  color: #7b2938;
+  font-weight: 700;
+  letter-spacing: 0.16em;
 }
 
 .page-counter-text {
@@ -302,9 +309,9 @@
 /* Final Message Screen */
 .final-message-container {
   position: relative;
-  width: min(var(--letter-width), 92vw);
-  height: min(var(--letter-height), 92vh);
+  width: min(var(--letter-width), 92vw, calc(90vh * 520 / 720));
   aspect-ratio: 520 / 720;
+  max-height: 90vh;
   background-color: var(--paper-cream);
   border-radius: 4px;
   box-shadow: 
@@ -313,7 +320,7 @@
     0 28px 70px -15px rgba(0, 0, 0, 0.6),
     inset 0 0 50px rgba(160, 130, 90, 0.15);
   border: 1px solid var(--paper-border);
-  padding: 48px 44px 36px 44px;
+  padding: clamp(28px, 5vh, 48px) clamp(20px, 4vw, 44px) clamp(24px, 4vh, 36px) clamp(20px, 4vw, 44px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -381,8 +388,9 @@
   transform: translateY(-1px);
 }
 
-/* Special Page Pop-up Overlay (Page 2, Page 3, and upcoming pages) */
+/* Special Page Pop-up Overlay (Page 2 to 6, plus first popup) */
 .page-popup-overlay,
+.first-popup-overlay,
 .page2-popup-overlay {
   position: absolute;
   inset: 0;
@@ -390,17 +398,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(14, 12, 10, 0.6);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: rgba(14, 12, 10, 0.32);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   padding: 16px;
 }
 
 .page-popup-card,
-.page2-popup-card {
+.page2-popup-card,
+.first-popup-card {
   position: relative;
-  width: min(390px, 92vw);
-  min-height: min(580px, 86vh);
+  width: min(380px, 90vw);
+  max-width: 90%;
+  min-height: min(520px, 80vh);
+  max-height: min(600px, 88vh);
   aspect-ratio: 576 / 940;
   background-color: #f7f1e6;
   background-image: url('/images/popup-bg.jpg');
@@ -409,7 +420,7 @@
   background-repeat: no-repeat;
   border: 1px solid rgba(175, 145, 110, 0.55);
   border-radius: 12px;
-  padding: 72px 26px 72px 26px;
+  padding: clamp(48px, 8vh, 68px) clamp(20px, 4vw, 28px);
   box-shadow: 
     0 4px 15px rgba(0, 0, 0, 0.2),
     0 25px 60px -12px rgba(25, 20, 15, 0.65),

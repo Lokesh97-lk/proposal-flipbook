@@ -17,3 +17,10 @@ export const killTweens = (targets) => {
     gsap.killTweensOf(targets);
   }
 };
+
+export const prefersReducedMotion = () => {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
+export default { EASING, killTweens, prefersReducedMotion };

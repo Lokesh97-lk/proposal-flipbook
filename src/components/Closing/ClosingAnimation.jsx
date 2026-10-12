@@ -46,11 +46,15 @@ export default function ClosingAnimation({ onComplete, onPlaySound }) {
         className="paper-sheet"
         style={{
           position: 'relative',
-          width: 'var(--letter-width)',
-          height: 'var(--letter-height)',
+          width: 'min(var(--letter-width), 92vw, calc(90vh * 520 / 720))',
+          maxHeight: '90vh',
+          aspectRatio: '520 / 720',
           perspective: '1400px',
           transformStyle: 'preserve-3d',
           backgroundColor: '#faf5eb',
+          backgroundImage: 'url(/images/paper-content-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           boxShadow: '0 25px 60px -15px rgba(0,0,0,0.65)',
           overflow: 'hidden'
         }}

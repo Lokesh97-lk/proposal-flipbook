@@ -24,19 +24,22 @@ export const runPageTurnAnimation = (
   const startAngle = isNext ? 0 : -180;
   const endAngle = isNext ? -180 : 0;
 
+  const isReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const duration = isReduced ? 0.05 : 0.75;
+
   gsap.killTweensOf(turningPageRef);
   if (shadowOverlayRef) gsap.killTweensOf(shadowOverlayRef);
 
   gsap.set(turningPageRef, {
     transformPerspective: 1600,
-    transformOrigin: isNext ? 'left center' : 'right center',
+    transformOrigin: 'left center',
     transformStyle: 'preserve-3d',
     rotateY: startAngle,
     zIndex: 20
   });
 
   const tl = gsap.timeline({
-    defaults: { ease: 'power2.inOut', duration: 0.75 },
+    defaults: { ease: 'power2.inOut', duration },
     onComplete: () => {
       gsap.set(turningPageRef, { zIndex: 1 });
       if (onComplete) onComplete();
@@ -46,16 +49,16 @@ export const runPageTurnAnimation = (
   // 1. Rotate the turning leaf
   tl.to(turningPageRef, {
     rotateY: endAngle,
-    duration: 0.75
+    duration
   }, 0);
 
   // 2. Dynamic curl shadow moving across the paper
-  if (shadowOverlayRef) {
+  if (shadowOverlayRef && !isReduced) {
     tl.fromTo(shadowOverlayRef,
       { opacity: isNext ? 0 : 0.6 },
       {
         opacity: 0.5,
-        duration: 0.35,
+        duration: duration * 0.45,
         ease: 'power1.in',
         yoyo: true,
         repeat: 1

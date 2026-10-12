@@ -20,6 +20,9 @@ export const runOpeningAnimation = ({
     gsap.killTweensOf(containerRef);
   }
 
+  const isReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const duration = isReduced ? 0.05 : 0.55;
+
   const tl = gsap.timeline({
     defaults: { ease: 'power2.inOut' },
     onComplete: () => {
@@ -27,7 +30,7 @@ export const runOpeningAnimation = ({
     }
   });
 
-  // Fast & snappy 3D page flip rotation over 0.55s
+  // Fast & snappy 3D page flip rotation
   if (turningCoverRef) {
     gsap.set(turningCoverRef, {
       transformPerspective: 1600,
@@ -39,27 +42,27 @@ export const runOpeningAnimation = ({
 
     tl.to(turningCoverRef, {
       rotateY: -180,
-      duration: 0.55,
+      duration,
       ease: 'power2.inOut'
     }, 0);
   }
 
   // Dynamic shadow curl moving across the turning page
-  if (curlShadowRef) {
+  if (curlShadowRef && !isReduced) {
     tl.fromTo(
       curlShadowRef,
       { opacity: 0 },
-      { opacity: 0.55, duration: 0.28, yoyo: true, repeat: 1, ease: 'power1.in' },
+      { opacity: 0.55, duration: duration * 0.5, yoyo: true, repeat: 1, ease: 'power1.in' },
       0
     );
   }
 
   // Subtle natural camera lift
-  if (containerRef) {
+  if (containerRef && !isReduced) {
     tl.fromTo(
       containerRef,
       { scale: 0.97 },
-      { scale: 1.0, duration: 0.55, ease: 'power2.out' },
+      { scale: 1.0, duration, ease: 'power2.out' },
       0
     );
   }

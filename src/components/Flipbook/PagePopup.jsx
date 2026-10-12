@@ -11,12 +11,12 @@ export default function PagePopup({ popup, onClose, onPlayClick }) {
       gsap.fromTo(
         overlayRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.45, delay: 0.15, ease: 'power2.out' }
+        { opacity: 1, duration: 0.4, delay: 0.1, ease: 'power2.out' }
       );
       gsap.fromTo(
         cardRef.current,
-        { opacity: 0, y: 22, scale: 0.94 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.55, delay: 0.2, ease: 'back.out(1.3)' }
+        { opacity: 0, y: 16, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, delay: 0.15, ease: 'back.out(1.2)' }
       );
     }
   }, []);
@@ -27,14 +27,14 @@ export default function PagePopup({ popup, onClose, onPlayClick }) {
     if (overlayRef.current && cardRef.current) {
       gsap.to(cardRef.current, {
         opacity: 0,
-        y: -12,
+        y: -10,
         scale: 0.96,
-        duration: 0.35,
+        duration: 0.3,
         ease: 'power2.in'
       });
       gsap.to(overlayRef.current, {
         opacity: 0,
-        duration: 0.35,
+        duration: 0.3,
         delay: 0.05,
         ease: 'power2.in',
         onComplete: onClose
@@ -51,7 +51,7 @@ export default function PagePopup({ popup, onClose, onPlayClick }) {
       ref={overlayRef}
       className="page-popup-overlay"
       role="dialog"
-      aria-label="Special Page Message"
+      aria-label="Personal Note"
     >
       <div ref={cardRef} className="page-popup-card">
         {/* 'X' Close button in top-right */}
@@ -64,7 +64,7 @@ export default function PagePopup({ popup, onClose, onPlayClick }) {
           ×
         </button>
 
-        {/* Central Content Area (Safely away from butterfly, sunflower, and eucalyptus) */}
+        {/* Central Content Area (Safely centered within paper artwork) */}
         <div className="page-popup-center-content">
           {/* Decorative Tag */}
           {popup.tag && (

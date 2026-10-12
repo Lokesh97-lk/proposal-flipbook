@@ -14,12 +14,28 @@ export const runClosingAnimation = ({
   creaseShadowRef,
   shadowRef
 }, onComplete) => {
+  if (containerRef) gsap.killTweensOf(containerRef);
+  if (foldBottomLeftRef) gsap.killTweensOf(foldBottomLeftRef);
+  if (foldTopRightRef) gsap.killTweensOf(foldTopRightRef);
+  if (creaseShadowRef) gsap.killTweensOf(creaseShadowRef);
+  if (shadowRef) gsap.killTweensOf(shadowRef);
+
+  const isReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const tl = gsap.timeline({
     defaults: { ease: 'power2.inOut' },
     onComplete: () => {
       if (onComplete) onComplete();
     }
   });
+
+  if (isReduced) {
+    tl.to(containerRef, {
+      opacity: 0.9,
+      duration: 0.05
+    });
+    return tl;
+  }
 
   // Stage 1: Lift paper slightly and tilt into 3D folding perspective (0.0s - 0.4s)
   tl.to(containerRef, {

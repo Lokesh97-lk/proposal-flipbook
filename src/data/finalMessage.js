@@ -13,6 +13,7 @@ export const finalMessageData = {
   paragraphs: [
     "Naa unga kita sollanum nencha ellarathaium pathrupinga nu namburen.",
     "Etho enakku therinja alavuku naa itha ready panni iruken, aana ithula iruka ellamey en idea apro oru oru kavithaium naa eluthunathu.",
+    "Naa ithulam enoda design enaku therunja alavuku design panni iruken oru sketch um neenga patha oru oru visiyamum na pannunathu than.",
     "And finally naa enna solla varen naa..."
   ],
 

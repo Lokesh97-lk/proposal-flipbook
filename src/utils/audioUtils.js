@@ -15,6 +15,7 @@ class SoundEngine {
     this.audioElements = {};
     this.ambientTimer = null;
     this.isAmbientPlaying = false;
+    this.hasInitiatedAmbient = false;
   }
 
   initContext() {
@@ -44,7 +45,7 @@ class SoundEngine {
       'page-turn': '/audio/page-turn.mp3',
       'paper-open': '/audio/paper-open.mp3',
       'paper-fold': '/audio/paper-fold.mp3',
-      ambient: '/audio/ennavale-adi-ennavale.mp3'
+      ambient: '/audio/muzumathi.mp3'
     };
 
     Object.entries(files).forEach(([key, src]) => {
@@ -56,7 +57,7 @@ class SoundEngine {
           audio.loop = true;
           audio.volume = this.volume;
           audio.onerror = () => {
-            if (audio.src.indexOf('ennavale-adi-ennavale.mp3') !== -1) {
+            if (audio.src.indexOf('muzumathi.mp3') !== -1) {
               audio.src = '/audio/ambient.mp3';
               audio.load();
               if (this.isAmbientPlaying && !this.isMuted) {
@@ -246,6 +247,7 @@ class SoundEngine {
 
   // Start background ambient music
   playAmbient() {
+    this.hasInitiatedAmbient = true;
     if (this.isAmbientPlaying || this.isMuted) return;
     this.initContext();
     this.isAmbientPlaying = true;
@@ -330,22 +332,31 @@ class SoundEngine {
     }
   }
 
-  toggleMute() {
-    this.isMuted = !this.isMuted;
+  setMute(muted) {
+    this.isMuted = Boolean(muted);
     if (this.ambientGain) {
       this.ambientGain.gain.setValueAtTime(this.isMuted ? 0 : this.volume, this.ctx?.currentTime || 0);
     }
     const ambientEl = this.audioElements['ambient'];
     if (ambientEl) {
       ambientEl.muted = this.isMuted;
-      if (!this.isMuted && this.isAmbientPlaying) {
-        ambientEl.play().catch(() => {});
+    }
+
+    if (this.isMuted) {
+      if (ambientEl && !ambientEl.paused) {
+        ambientEl.pause();
+      }
+      this.stopProceduralAmbient();
+    } else {
+      if (this.hasInitiatedAmbient && !this.isAmbientPlaying) {
+        this.playAmbient();
       }
     }
-    if (!this.isMuted && !this.isAmbientPlaying) {
-      this.playAmbient();
-    }
     return this.isMuted;
+  }
+
+  toggleMute() {
+    return this.setMute(!this.isMuted);
   }
 
   setVolume(vol) {

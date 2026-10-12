@@ -44,8 +44,8 @@ export default function OpeningAnimation({ onComplete, onPlaySound }) {
         className="paper-sheet"
         style={{
           position: 'relative',
-          width: 'min(var(--letter-width), 92vw)',
-          height: 'min(var(--letter-height), 92vh)',
+          width: 'min(var(--letter-width), 92vw, calc(90vh * 520 / 720))',
+          maxHeight: '90vh',
           aspectRatio: '520 / 720',
           perspective: '1600px',
           transformStyle: 'preserve-3d',
