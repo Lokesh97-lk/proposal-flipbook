@@ -7,18 +7,16 @@
 
 export const finalMessageData = {
   // Opening lead-in sentence
-  leadIn: "First ivlo thooram vanthathuku Nandrii ! ✨",
+  leadIn: "",
 
   // Main personal message paragraphs
   paragraphs: [
-    "Naa unga kita sollanum nencha ellarathaium pathrupinga nu namburen.",
-    "Etho enakku therinja alavuku naa itha ready panni iruken, aana ithula iruka ellamey en idea apro oru oru kavithaium naa eluthunathu.",
-    "Naa ithulam enoda design enaku therunja alavuku design panni iruken oru sketch um neenga patha oru oru visiyamum na pannunathu than.",
-    "And finally naa enna solla varen naa..."
+    "Naa unga kita sollanumnu vanthatha etho solli iruken, unagaluku purium nu nenikuren.",
+    "Naa final solla varathu enna naa..."
   ],
 
   // Prominent highlighted line
-  highlightedLine: "“I WANT TO LIVE A LIFE ALONG WITH YOU”",
+  highlightedLine: "“I WANT TO TRAVEL THE REMAINING LIFE WITH YOU TILL END”",
 
   // Sincere thank you note
   thankYouText: "Thank You ❤️",

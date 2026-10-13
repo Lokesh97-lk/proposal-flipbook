@@ -42,11 +42,10 @@ export default function App() {
     toggleMute
   } = useAudio();
 
-  // 1. User clicks intro floating cover -> triggers physical unfold
+  // 1. User clicks intro floating cover -> triggers physical unfold (no song played at starting)
   const handleOpenPaper = useCallback(() => {
-    startAmbient();
     setExperienceState('opening');
-  }, [startAmbient]);
+  }, []);
 
   // 2. Physical paper unfolding finishes -> reveals opened paper with First Popup
   const handleOpeningFinished = useCallback(() => {
@@ -92,20 +91,13 @@ export default function App() {
     setExperienceState('intro');
   }, [playClick]);
 
-  // Unlock after password verification & song choice
-  const handleUnlock = useCallback((options = {}) => {
+  // Unlock after password verification (no song at starting)
+  const handleUnlock = useCallback(() => {
     try {
       sessionStorage.setItem('proposal_flipbook_unlocked', 'true');
     } catch {}
     setIsUnlocked(true);
-
-    if (options.playMusic) {
-      setMute(false);
-      startAmbient();
-    } else if (options.playMusic === false) {
-      setMute(true);
-    }
-  }, [setMute, startAmbient]);
+  }, []);
 
   // Lock the website again
   const handleLock = useCallback(() => {

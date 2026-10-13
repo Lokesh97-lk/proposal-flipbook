@@ -16,12 +16,7 @@ export default function FinalPage({ onCloseLetter, onPlayClick }) {
 
   const handleClose = () => {
     if (onPlayClick) onPlayClick();
-    gsap.to(contentRef.current, {
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power2.inOut',
-      onComplete: onCloseLetter
-    });
+    onCloseLetter();
   };
 
   return (
@@ -59,9 +54,11 @@ export default function FinalPage({ onCloseLetter, onPlayClick }) {
         >
           {/* Opening Lead-in */}
           <div>
-            <p className="final-lead-in">
-              {finalMessageData.leadIn}
-            </p>
+            {finalMessageData.leadIn && (
+              <p className="final-lead-in">
+                {finalMessageData.leadIn}
+              </p>
+            )}
 
             {/* Main Personal Message Paragraphs */}
             <div className="final-paragraphs">
@@ -121,13 +118,14 @@ export default function FinalPage({ onCloseLetter, onPlayClick }) {
           </div>
 
           {/* Discreet CLOSE THE LETTER Control */}
-          <div style={{ marginTop: '16px' }}>
+          <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
             <button
               className="close-letter-btn"
               onClick={handleClose}
               aria-label="Close the letter"
             >
-              {finalMessageData.closeButtonText || "CLOSE THE LETTER"}
+              <span className="close-btn-icon" style={{ fontSize: '1rem', marginRight: '6px' }}>✉</span>
+              <span>{finalMessageData.closeButtonText || "CLOSE THE LETTER"}</span>
             </button>
           </div>
         </div>

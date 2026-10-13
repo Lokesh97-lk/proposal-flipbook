@@ -1,0 +1,156 @@
+/* ==========================================================================
+   FLOWER WORD ANIMATION (Photorealistic Cinematic "Y [FLOWER] U")
+   True 16:9 cinematic framing with real camera photographic fidelity,
+   solid asphalt background, real human hand, and stationary pure white typography.
+   ========================================================================== */
+
+.flower-word-section {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  overflow: hidden;
+  background-color: #0c0d10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  animation: flowerSectionFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes flowerSectionFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 16:9 Cinematic Composition Container */
+.flower-cinematic-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #0c0d10;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .flower-cinematic-stage {
+    width: min(100vw, calc(100vh * 16 / 9));
+    height: 100vh;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .flower-cinematic-stage {
+    width: 100vw;
+    height: min(100vh, calc(100vw * 9 / 16));
+  }
+}
+
+/* Mobile full-screen fill without clipping composition */
+@media (max-width: 600px) {
+  .flower-cinematic-stage {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+/* Real Camera Photographic Track */
+.flower-images-track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.flower-frame-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1;
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+/* Incoming flower smoothly transitions to 1 on top */
+.flower-frame-img.active {
+  opacity: 1;
+  z-index: 3;
+}
+
+/* Previous flower stays solid at opacity 1 underneath during crossfade to eliminate flicker */
+.flower-frame-img.previous {
+  opacity: 1;
+  z-index: 2;
+  transition: none;
+}
+
+/* Clean, Stationary Bold Sans-Serif Typography: Y [FLOWER] U */
+.flower-word-typography {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.flower-char {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(5.5rem, 15vw, 12rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-shadow: none;
+  filter: none;
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Center Spacer framing the hand-held flower in the middle */
+.flower-center-gap {
+  width: clamp(160px, 22vw, 320px);
+  height: 120px;
+  flex-shrink: 0;
+}
+
+/* Mobile Responsive Typography Scaling */
+@media (max-width: 768px) {
+  .flower-char {
+    font-size: clamp(3.8rem, 18vw, 6.5rem);
+  }
+
+  .flower-center-gap {
+    width: clamp(120px, 28vw, 190px);
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .flower-word-section {
+    animation: none;
+  }
+
+  .flower-frame-img {
+    transition: none;
+  }
+}

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { introData } from '../../data/intro';
+import FlowerWordAnimation from '../Intro/FlowerWordAnimation';
 
 export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
   const gateConfig = introData.passwordGate || {
@@ -18,12 +19,12 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
   const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSongPrompt, setShowSongPrompt] = useState(false);
+  const [showWelcomePrompt, setShowWelcomePrompt] = useState(false);
 
   const containerRef = useRef(null);
   const cardRef = useRef(null);
   const sealRef = useRef(null);
-  const songPromptRef = useRef(null);
+  const welcomePromptRef = useRef(null);
   const inputRefs = useRef([]);
 
   // Auto-focus first input on mount & entrance animation
@@ -141,22 +142,29 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
         onPlayClick();
       }
 
-      // Smoothly transition card into the "I have a song for you" prompt
-      gsap.timeline()
-        .to(cardRef.current, {
-          scale: 1.02,
-          duration: 0.35,
-          ease: 'power2.out'
-        })
-        .to(cardRef.current, {
-          scale: 1,
-          duration: 0.3,
-          ease: 'back.out(1.2)',
-          onComplete: () => {
-            setShowSongPrompt(true);
-            setIsSubmitting(false);
-          }
-        });
+      // Smoothly transition into the Flower Word Animation section
+      if (cardRef.current && containerRef.current) {
+        gsap.timeline()
+          .to(cardRef.current, {
+            scale: 0.96,
+            y: -10,
+            opacity: 0,
+            duration: 0.45,
+            ease: 'power2.in'
+          })
+          .to(containerRef.current, {
+            opacity: 0,
+            duration: 0.35,
+            ease: 'power2.in',
+            onComplete: () => {
+              setShowWelcomePrompt(true);
+              setIsSubmitting(false);
+            }
+          });
+      } else {
+        setShowWelcomePrompt(true);
+        setIsSubmitting(false);
+      }
 
     } else {
       // FAILED
@@ -190,52 +198,40 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
     }
   };
 
-  // Complete unlock after song choice
-  const handleSongChoice = (playMusic) => {
+  // Complete unlock and proceed to letter
+  const handleProceed = () => {
     if (onPlayClick) onPlayClick();
-
-    if (cardRef.current && containerRef.current) {
-      gsap.timeline()
-        .to(cardRef.current, {
-          scale: 1.02,
-          duration: 0.25,
-          ease: 'power2.out'
-        })
-        .to(containerRef.current, {
-          opacity: 0,
-          y: -18,
-          filter: 'blur(6px)',
-          duration: 0.65,
-          ease: 'power3.inOut',
-          onComplete: () => {
-            try {
-              sessionStorage.setItem('proposal_flipbook_unlocked', 'true');
-            } catch (e) {}
-            onUnlock({ playMusic });
-          }
-        });
-    } else {
-      try {
-        sessionStorage.setItem('proposal_flipbook_unlocked', 'true');
-      } catch (e) {}
-      onUnlock({ playMusic });
-    }
+    try {
+      sessionStorage.setItem('proposal_flipbook_unlocked', 'true');
+    } catch (e) {}
+    onUnlock();
   };
 
   // Auto-validate once all 4 digits are filled
   useEffect(() => {
     const fullCode = digits.join('');
-    if (fullCode.length === 4 && !isSuccess && !isSubmitting && !showSongPrompt) {
+    if (fullCode.length === 4 && !isSuccess && !isSubmitting && !showWelcomePrompt) {
       handleValidate(fullCode);
     }
-  }, [digits, isSuccess, isSubmitting, showSongPrompt, handleValidate]);
+  }, [digits, isSuccess, isSubmitting, showWelcomePrompt, handleValidate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isSubmitting && !showSongPrompt) {
+    if (!isSubmitting && !showWelcomePrompt) {
       handleValidate(digits.join(''));
     }
   };
+
+  if (showWelcomePrompt) {
+    return (
+      <FlowerWordAnimation
+        onProceed={handleProceed}
+        onPlayClick={onPlayClick}
+        promptTitle="welcome to explore my random night toughts on you"
+        promptByline="drafted by nights"
+      />
+    );
+  }
 
   return (
     <div
@@ -249,15 +245,10 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
         {/* Subtle decorative inner border */}
         <div className="password-gate-inner-border" />
 
-        {/* Vintage Wax Seal / Lock / Music Emblem */}
+        {/* Vintage Wax Seal / Lock Emblem */}
         <div ref={sealRef} className={`password-gate-seal ${isSuccess ? 'unlocked' : ''}`}>
           <div className="seal-glow-ring" />
-          {showSongPrompt ? (
-            /* Music Note Icon for Song Question */
-            <span style={{ fontSize: '1.45rem', color: '#faebd7' }} role="img" aria-label="Music">
-              ♫
-            </span>
-          ) : isSuccess ? (
+          {isSuccess ? (
             /* Unlocked Open Lock / Heart Icon */
             <svg
               className="seal-icon"
@@ -287,169 +278,131 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
           )}
         </div>
 
-        {/* STEP 1: PIN Input Form */}
-        {!showSongPrompt ? (
-          <>
-            {/* Header Tag */}
-            <div className="password-gate-tag">
-              {gateConfig.title || "Only For You"}
-            </div>
+        {/* Header Tag */}
+        <div className="password-gate-tag">
+          {gateConfig.title || "Only For You"}
+        </div>
 
-            {/* The Special Pop-up Message */}
-            <p className="password-gate-message">
-              &ldquo;{gateConfig.message}&rdquo;
-            </p>
+        {/* The Special Pop-up Message */}
+        <p className="password-gate-message">
+          &ldquo;{gateConfig.message}&rdquo;
+        </p>
 
-            {/* Subtext description */}
-            <p className="password-gate-submessage">
-              {gateConfig.subMessage}
-            </p>
+        {/* Subtext description */}
+        <p className="password-gate-submessage">
+          {gateConfig.subMessage}
+        </p>
 
-            {/* Logic Hint Badge */}
-            <div className="password-gate-hint-badge">
-              <span className="hint-label">KEY LOGIC</span>
-              <span className="hint-value">{gateConfig.logicHint || "DOB : DD/MM"}</span>
-            </div>
+        {/* Logic Hint Badge */}
+        <div className="password-gate-hint-badge">
+          <span className="hint-label">KEY LOGIC</span>
+          <span className="hint-value">{gateConfig.logicHint || "DOB : DD/MM"}</span>
+        </div>
 
-            {/* Password PIN Form */}
-            <form onSubmit={handleSubmit} className="password-gate-form">
-              <div className="password-pin-container" onPaste={handlePaste}>
-                {/* Day Digits (DD) */}
-                <div className="pin-group">
-                  <input
-                    ref={(el) => (inputRefs.current[0] = el)}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={1}
-                    value={digits[0]}
-                    placeholder="D"
-                    disabled={isSubmitting}
-                    onChange={(e) => handleChange(0, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(0, e)}
-                    className={`pin-input ${error ? 'pin-error' : ''} ${isSuccess ? 'pin-success' : ''}`}
-                    aria-label="Day digit 1"
-                  />
-                  <input
-                    ref={(el) => (inputRefs.current[1] = el)}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={1}
-                    value={digits[1]}
-                    placeholder="D"
-                    disabled={isSubmitting}
-                    onChange={(e) => handleChange(1, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(1, e)}
-                    className={`pin-input ${error ? 'pin-error' : ''} ${isSuccess ? 'pin-success' : ''}`}
-                    aria-label="Day digit 2"
-                  />
-                </div>
-
-                {/* Separator / */}
-                <div className="pin-slash" aria-hidden="true">/</div>
-
-                {/* Month Digits (MM) */}
-                <div className="pin-group">
-                  <input
-                    ref={(el) => (inputRefs.current[2] = el)}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={1}
-                    value={digits[2]}
-                    placeholder="M"
-                    disabled={isSubmitting}
-                    onChange={(e) => handleChange(2, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(2, e)}
-                    className={`pin-input ${error ? 'pin-error' : ''} ${isSuccess ? 'pin-success' : ''}`}
-                    aria-label="Month digit 1"
-                  />
-                  <input
-                    ref={(el) => (inputRefs.current[3] = el)}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={1}
-                    value={digits[3]}
-                    placeholder="M"
-                    disabled={isSubmitting}
-                    onChange={(e) => handleChange(3, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(3, e)}
-                    className={`pin-input ${error ? 'pin-error' : ''} ${isSuccess ? 'pin-success' : ''}`}
-                    aria-label="Month digit 2"
-                  />
-                </div>
-              </div>
-
-              {/* Feedback Messages */}
-              {error && (
-                <div className="password-gate-error" role="alert">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="8" x2="12" y2="12" />
-                    <line x1="12" y1="16" x2="12.01" y2="16" />
-                  </svg>
-                  <span>{error}</span>
-                </div>
-              )}
-
-              {isSuccess && (
-                <div className="password-gate-success">
-                  <span>{gateConfig.successMessage || "Key accepted. Unfolding your story..."}</span>
-                </div>
-              )}
-
-              {/* Submit Action Button */}
-              <button
-                type="submit"
-                className={`password-gate-submit-btn ${isSuccess ? 'btn-success' : ''}`}
+        {/* Password PIN Form */}
+        <form onSubmit={handleSubmit} className="password-gate-form">
+          <div className="password-pin-container" onPaste={handlePaste}>
+            {/* Day Digits (DD) */}
+            <div className="pin-group">
+              <input
+                ref={(el) => (inputRefs.current[0] = el)}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={1}
+                value={digits[0]}
+                placeholder="D"
                 disabled={isSubmitting}
-                onClick={() => onPlayClick && onPlayClick()}
-              >
-                {isSuccess ? "UNSEALING..." : (gateConfig.buttonText || "UNLOCK & ENTER")}
-              </button>
-            </form>
-
-            {/* Small subtle footer note */}
-            <p className="password-gate-footer-note">
-              DOB format: Day (DD) and Month (MM)
-            </p>
-          </>
-        ) : (
-          /* STEP 2: Song Question Popup Prompt */
-          <div ref={songPromptRef} className="password-gate-song-prompt">
-            <div className="password-gate-tag">
-              ✦ A SPECIAL SONG FOR YOU ✦
+                onChange={(e) => handleChange(0, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(0, e)}
+                className={`pin-input ${error ? 'pin-error' : ''} ${isSuccess ? 'pin-success' : ''}`}
+                aria-label="Day digit 1"
+              />
+              <input
+                ref={(el) => (inputRefs.current[1] = el)}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={1}
+                value={digits[1]}
+                placeholder="D"
+                disabled={isSubmitting}
+                onChange={(e) => handleChange(1, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(1, e)}
+                className={`pin-input ${error ? 'pin-error' : ''} ${isSuccess ? 'pin-success' : ''}`}
+                aria-label="Day digit 2"
+              />
             </div>
 
-            <h2 className="song-prompt-title">
-              I have a song for you
-            </h2>
+            {/* Separator / */}
+            <div className="pin-slash" aria-hidden="true">/</div>
 
-            <p className="song-prompt-message">
-              &ldquo;I chose a song especially for you while you read this letter. Would you like to play it?&rdquo;
-            </p>
-
-            <div className="song-prompt-actions">
-              <button
-                className="song-btn-play"
-                onClick={() => handleSongChoice(true)}
-                autoFocus
-              >
-                <span>♫</span>
-                <span>YES, PLAY SONG</span>
-              </button>
-
-              <button
-                className="song-btn-mute"
-                onClick={() => handleSongChoice(false)}
-              >
-                NO, DON'T PLAY
-              </button>
+            {/* Month Digits (MM) */}
+            <div className="pin-group">
+              <input
+                ref={(el) => (inputRefs.current[2] = el)}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={1}
+                value={digits[2]}
+                placeholder="M"
+                disabled={isSubmitting}
+                onChange={(e) => handleChange(2, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(2, e)}
+                className={`pin-input ${error ? 'pin-error' : ''} ${isSuccess ? 'pin-success' : ''}`}
+                aria-label="Month digit 1"
+              />
+              <input
+                ref={(el) => (inputRefs.current[3] = el)}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={1}
+                value={digits[3]}
+                placeholder="M"
+                disabled={isSubmitting}
+                onChange={(e) => handleChange(3, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(3, e)}
+                className={`pin-input ${error ? 'pin-error' : ''} ${isSuccess ? 'pin-success' : ''}`}
+                aria-label="Month digit 2"
+              />
             </div>
           </div>
-        )}
+
+          {/* Feedback Messages */}
+          {error && (
+            <div className="password-gate-error" role="alert">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <span>{error}</span>
+            </div>
+          )}
+
+          {isSuccess && (
+            <div className="password-gate-success">
+              <span>{gateConfig.successMessage || "Key accepted. Unfolding your story..."}</span>
+            </div>
+          )}
+
+          {/* Submit Action Button */}
+          <button
+            type="submit"
+            className={`password-gate-submit-btn ${isSuccess ? 'btn-success' : ''}`}
+            disabled={isSubmitting}
+            onClick={() => onPlayClick && onPlayClick()}
+          >
+            {isSuccess ? "UNSEALING..." : (gateConfig.buttonText || "UNLOCK & ENTER")}
+          </button>
+        </form>
+
+        {/* Small subtle footer note */}
+        <p className="password-gate-footer-note">
+          DOB format: Day (DD) and Month (MM)
+        </p>
       </div>
     </div>
   );
