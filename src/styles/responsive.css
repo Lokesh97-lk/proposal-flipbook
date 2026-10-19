@@ -52,6 +52,19 @@
     margin-bottom: 6px !important;
   }
 
+  .first-popup-day-timer {
+    padding: 6px 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .day-timer-counter {
+    font-size: 1.02rem !important;
+  }
+
+  .day-timer-ticker {
+    font-size: 0.68rem !important;
+  }
+
   .popup-reading-order-card {
     padding: 8px 10px !important;
     margin-bottom: 12px !important;

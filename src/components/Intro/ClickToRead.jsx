@@ -1,9 +1,11 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { introData } from '../../data/intro';
+import { useDayTimer } from '../../utils/dateTimer';
 
 export default function ClickToRead({ onReadLetter, onPlayClick }) {
   const containerRef = useRef(null);
+  const timer = useDayTimer(introData.firstPopup.startDate || '2026-03-19');
 
   useEffect(() => {
     // Gentle fade-in after popup closes
@@ -27,7 +29,9 @@ export default function ClickToRead({ onReadLetter, onPlayClick }) {
   return (
     <div ref={containerRef} className="click-to-read-stage">
       <p className="click-to-read-message">
-        &ldquo;{introData.clickToRead.message}&rdquo;
+        &ldquo;I have been watching you in the silence from{' '}
+        <span className="first-popup-timer-highlight">{timer.formattedMonthDay}</span>
+        , so I express today my feelings towards you.&rdquo;
       </p>
 
       {introData.clickToRead.prompt && (

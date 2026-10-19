@@ -45,6 +45,75 @@
   }
 }
 
+/* Slim Portrait Stage (9:16 aspect ratio: 941 x 1672 for 'For You' Book 4) */
+.book-stage-container.slim-portrait-book {
+  --nav-offset: 86px;
+  width: min(450px, 92vw, calc((88vh - var(--nav-offset)) * (941 / 1672)));
+  height: calc(min(450px, 92vw, calc((88vh - var(--nav-offset)) * (941 / 1672))) / (941 / 1672) + var(--nav-offset));
+  max-height: 90vh;
+  aspect-ratio: auto;
+}
+
+.book-stage-container.slim-portrait-book .book-cover-sheet {
+  padding: clamp(16px, 3vh, 26px) clamp(16px, 3.5vw, 28px);
+}
+
+.book-stage-container.slim-portrait-book .book-cover-title-en {
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+}
+
+.book-stage-container.slim-portrait-book .book-cover-title-ta {
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+}
+
+.book-stage-container.slim-portrait-book .book-cover-artwork-cameo {
+  width: clamp(90px, 18vw, 130px);
+  height: clamp(90px, 18vw, 130px);
+}
+
+.book-interior-page.slim-portrait-page {
+  aspect-ratio: auto;
+}
+
+.book-interior-page.slim-portrait-page .book-page-body-container {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-interior-page.slim-portrait-page .book-artwork-page-container {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.book-interior-page.slim-portrait-page .book-artwork-stage {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.book-interior-page.slim-portrait-page .book-artwork-main-img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 640px) {
+  .book-stage-container.slim-portrait-book {
+    --nav-offset: 78px;
+    width: min(94vw, calc((86vh - var(--nav-offset)) * (941 / 1672)));
+    height: auto;
+    max-height: 88vh;
+  }
+}
+
 /* ==========================================================================
    BOOK COVER SCREEN
    ========================================================================== */

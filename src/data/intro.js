@@ -15,7 +15,11 @@ export const introData = {
   firstPopup: {
     title: "How to Read · வாசிக்கும் வரிசை",
     tag: "READING ORDER",
-    message: "I have been watching you in my silence over 7 months of time, so I express today my feelings towards you.",
+    startDate: "2026-03-19",
+    startLabel: "19th March",
+    messagePrefix: "I have been watching you in the silence from",
+    messageSuffix: ", so I express today my feelings towards you.",
+    message: "I have been watching you in the silence from {timer}, so I express today my feelings towards you.",
     orderPrompt: "Please read in this special order:",
     orderSteps: [
       {
@@ -65,7 +69,9 @@ export const introData = {
 
   // Message displayed on the opened paper
   clickToRead: {
-    message: "I have been watching you in my silence over 7 months of time, so I express today my feelings towards you.",
+    messagePrefix: "I have been watching you in the silence from",
+    messageSuffix: ", so I express today my feelings towards you.",
+    message: "I have been watching you in the silence from {timer}, so I express today my feelings towards you.",
     prompt: "Please click next to see what is waiting...",
     buttonLabel: "NEXT →"
   }

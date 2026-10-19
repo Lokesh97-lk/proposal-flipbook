@@ -56,13 +56,15 @@ export const indexBooks = [
     tamilNumber: '௪',
     title: 'For You',
     tamilTitle: 'உனக்காக',
-    subtitle: 'My Heart & Sacred Promise',
-    description: 'The authentic handwritten letter, original Tamil art, and sacred promise.',
-    tamilPoeticIntro: 'இந்தச் சிறிய புத்தகத்தின் ஒவ்வொரு பக்கத்திலும்,\nஉனக்காகவே ஒரு மனம் காத்திருக்கிறது...',
-    coverImage: '/images/title-page.png',
-    previewArtwork: '/images/title-page.png',
+    subtitle: 'My Words, My Heart & My Sacred Promise',
+    description: 'The authentic handwritten letter, spoken straight from the heart.',
+    tamilPoeticIntro: 'சில அழகுகள் பூக்களைப் போல மலர்வதில்லை...\nநம் மனமே அவர்களுக்காக கவிதையாக மாறி விடுகிறது...',
+    coverImage: '/images/for-you/last-01.png',
+    previewArtwork: '/images/for-you/last-01.png',
     accentColor: '#8a4852',
     iconSymbol: '✉',
+    isSlimPortrait: true,
+    aspectRatio: '941 / 1672',
     bookData: forYouBook
   }
 ];

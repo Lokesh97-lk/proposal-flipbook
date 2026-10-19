@@ -20,9 +20,11 @@ export default function BookExperience({
 
   // Construct page array based on book type
   const isPersonalLetterBook = Boolean(bookData.isPersonalLetterBook);
-  const pages = isPersonalLetterBook
-    ? [bookData.introPoemPage, ...(bookData.letterPages || [])]
-    : (bookData.pages || []);
+  const pages = (bookData.pages && bookData.pages.length > 0)
+    ? bookData.pages
+    : isPersonalLetterBook
+      ? [bookData.introPoemPage, ...(bookData.letterPages || [])].filter(Boolean)
+      : (bookData.pages || []);
 
   const totalPages = pages.length;
 
@@ -46,6 +48,15 @@ export default function BookExperience({
     bookData?.isLandscape ||
     currentPageData?.isLandscape ||
     (currentPageData?.background && currentPageData.background.includes('/moon/'))
+  );
+
+  // Check if current book has slim portrait 9:16 aspect ratio (For You book 941x1672)
+  const isSlimPortrait = Boolean(
+    bookData?.isSlimPortrait ||
+    bookData?.aspectRatio === '941 / 1672' ||
+    currentPageData?.isSlimPortrait ||
+    currentPageData?.aspectRatio === '941 / 1672' ||
+    (currentPageData?.background && currentPageData.background.includes('/for-you/'))
   );
 
   // Open the book cover
@@ -129,19 +140,20 @@ export default function BookExperience({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className={`book-stage-container ${isLandscape ? 'landscape-book' : ''}`}>
+      <div className={`book-stage-container ${isLandscape ? 'landscape-book' : ''} ${isSlimPortrait ? 'slim-portrait-book' : ''}`}>
         {/* STAGE A: COVER SCREEN (Hinges open when clicked) */}
         {!isCoverOpen ? (
           <BookCover
             bookData={bookData}
             isLandscape={isLandscape}
+            isSlimPortrait={isSlimPortrait}
             onOpenBook={handleOpenCover}
             onReturnToIndex={onReturnToIndex}
             onPlaySound={onPlayPaperOpen || onPlayClick}
           />
         ) : (
           /* STAGE B: INTERIOR READABLE PAGES */
-          <div className={`book-interior-page ${isLandscape ? 'landscape-page' : ''}`}>
+          <div className={`book-interior-page ${isLandscape ? 'landscape-page' : ''} ${isSlimPortrait ? 'slim-portrait-page' : ''}`}>
             {/* 1. TOP BAR: Return to Library + Title Badge */}
             <BookTopBar
               onReturnToIndex={onReturnToIndex}

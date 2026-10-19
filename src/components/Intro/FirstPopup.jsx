@@ -1,10 +1,12 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { introData } from '../../data/intro';
+import { useDayTimer } from '../../utils/dateTimer';
 
 export default function FirstPopup({ onClose, onPlayClick }) {
   const overlayRef = useRef(null);
   const cardRef = useRef(null);
+  const timer = useDayTimer(introData.firstPopup.startDate || '2026-03-19');
 
   useEffect(() => {
     // Gentle entrance with a slight float-up
@@ -76,10 +78,34 @@ export default function FirstPopup({ onClose, onPlayClick }) {
             ✦ {popup.title || "How to Read · வாசிக்கும் வரிசை"} ✦
           </div>
 
-          {/* Main 7 Months Silence Confession Message */}
+          {/* Main Silence Confession Message with Dynamic Month / Day Format */}
           <p className="first-popup-confession-text">
-            &ldquo;{popup.message}&rdquo;
+            &ldquo;I have been watching you in the silence from{' '}
+            <span className="first-popup-timer-highlight">
+              {timer.formattedMonthDay}
+            </span>
+            , so I express today my feelings towards you.&rdquo;
           </p>
+
+          {/* Romantic Live Day Timer: 19th March → Countless */}
+          <div className="first-popup-day-timer" aria-label="Day timer from 19th March to countless">
+            <div className="day-timer-header">
+              <span className="day-timer-icon" aria-hidden="true">⏳</span>
+              <span className="day-timer-title">19TH MARCH → COUNTLESS</span>
+            </div>
+            <div className="day-timer-counter" title="Calculated in Month / Day format">
+              {timer.formattedMonthDay}
+            </div>
+            <div className="day-timer-ticker" title="Live ticking counter">
+              <span>{timer.totalDays} Total Days</span>
+              <span className="day-timer-dot">·</span>
+              <span>
+                {String(timer.hours).padStart(2, '0')}:
+                {String(timer.minutes).padStart(2, '0')}:
+                {String(timer.seconds).padStart(2, '0')}
+              </span>
+            </div>
+          </div>
 
           {/* Step-by-step Reading Order */}
           {popup.orderSteps && popup.orderSteps.length > 0 && (
