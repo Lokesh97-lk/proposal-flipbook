@@ -47,28 +47,67 @@
 
 /* Slim Portrait Stage (9:16 aspect ratio: 941 x 1672 for 'For You' Book 4) */
 .book-stage-container.slim-portrait-book {
-  --nav-offset: 86px;
-  width: min(450px, 92vw, calc((88vh - var(--nav-offset)) * (941 / 1672)));
-  height: calc(min(450px, 92vw, calc((88vh - var(--nav-offset)) * (941 / 1672))) / (941 / 1672) + var(--nav-offset));
-  max-height: 90vh;
-  aspect-ratio: auto;
+  position: relative;
+  width: min(440px, 92vw, calc(86vh * (941 / 1672)));
+  aspect-ratio: 941 / 1672;
+  max-height: 88vh;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+  margin: 0 auto;
 }
 
 .book-stage-container.slim-portrait-book .book-cover-sheet {
-  padding: clamp(16px, 3vh, 26px) clamp(16px, 3.5vw, 28px);
+  padding: clamp(14px, 2.8vh, 26px) clamp(14px, 3.2vw, 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
 }
 
-.book-stage-container.slim-portrait-book .book-cover-title-en {
-  font-size: clamp(1.7rem, 4vw, 2.3rem);
-}
-
-.book-stage-container.slim-portrait-book .book-cover-title-ta {
-  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+.book-stage-container.slim-portrait-book .book-cover-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.4vh, 14px);
+  margin: auto 0;
+  width: 100%;
 }
 
 .book-stage-container.slim-portrait-book .book-cover-artwork-cameo {
-  width: clamp(90px, 18vw, 130px);
-  height: clamp(90px, 18vw, 130px);
+  width: clamp(84px, 18vw, 130px);
+  height: clamp(84px, 18vw, 130px);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+
+.book-stage-container.slim-portrait-book .book-cover-title-en {
+  font-size: clamp(1.6rem, 4.2vw, 2.2rem);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.book-stage-container.slim-portrait-book .book-cover-title-ta {
+  font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+  margin: 0;
+}
+
+.book-stage-container.slim-portrait-book .book-cover-subtitle {
+  font-size: clamp(0.88rem, 2.4vw, 1.05rem);
+  line-height: 1.35;
+  margin: 0;
+  max-width: 90%;
+}
+
+.book-stage-container.slim-portrait-book .book-cover-open-btn {
+  padding: 8px 26px;
+  font-size: clamp(1rem, 2.8vw, 1.15rem);
+}
+
+.book-stage-container.slim-portrait-book .book-cover-return-link {
+  font-size: clamp(0.88rem, 2.4vw, 1rem);
+  padding: 3px 6px;
 }
 
 .book-interior-page.slim-portrait-page {
@@ -80,22 +119,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .book-interior-page.slim-portrait-page .book-artwork-page-container {
   padding: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .book-interior-page.slim-portrait-page .book-artwork-stage {
   width: 100%;
   height: 100%;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .book-interior-page.slim-portrait-page .book-artwork-main-img {
-  width: auto;
+  width: 100%;
   height: 100%;
   max-width: 100%;
   max-height: 100%;
@@ -107,10 +155,9 @@
 
 @media (max-width: 640px) {
   .book-stage-container.slim-portrait-book {
-    --nav-offset: 78px;
-    width: min(94vw, calc((86vh - var(--nav-offset)) * (941 / 1672)));
-    height: auto;
-    max-height: 88vh;
+    width: min(92vw, calc(86vh * (941 / 1672)));
+    aspect-ratio: 941 / 1672;
+    max-height: 86vh;
   }
 }
 
