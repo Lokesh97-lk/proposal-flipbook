@@ -13,10 +13,38 @@ export const introData = {
 
   // First pop-up message (appears immediately after title page turns over)
   firstPopup: {
-    title: "To My Dearest",
+    title: "How to Read · வாசிக்கும் வரிசை",
+    tag: "READING ORDER",
     message: "I have been watching you in my silence over 7 months of time, so I express today my feelings towards you.",
-    prompt: "Please click next to see what is waiting...",
-    buttonLabel: "NEXT →",
+    orderPrompt: "Please read in this special order:",
+    orderSteps: [
+      {
+        step: "1st",
+        title: "Go with Moon",
+        tamilTitle: "என் நிலா",
+        symbol: "☾"
+      },
+      {
+        step: "2nd",
+        title: "Go with Nature",
+        tamilTitle: "என் இயற்கை",
+        symbol: "❀"
+      },
+      {
+        step: "3rd",
+        title: "Read with Random Thoughts",
+        tamilTitle: "சில நினைவுகள்",
+        symbol: "✧"
+      },
+      {
+        step: "Finally",
+        title: "Open to \"For You\" section and read that",
+        tamilTitle: "உனக்காக",
+        symbol: "✉",
+        isFinal: true
+      }
+    ],
+    buttonLabel: "CONTINUE READING →",
     tamilText: "Naan unga kitta sollanumnu nenacha\nellathaiyum etho solli irukken paarunga...",
     englishHint: "",
     closeLabel: "Close message"

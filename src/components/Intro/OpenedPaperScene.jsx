@@ -61,12 +61,11 @@ export default function OpenedPaperScene({ onStartReading, onPlayClick }) {
           <button
             onClick={handleReopenPopup}
             className="page2-reopen-note-btn"
-            title="View first message again"
-            aria-label="View first message again"
-            style={{ top: '18px', right: '18px', zIndex: 30 }}
+            title="View reading order again"
+            aria-label="View reading order again"
           >
-            <span>💌</span>
-            <span>First Note</span>
+            <span>📖</span>
+            <span>Reading Order</span>
           </button>
         )}
 

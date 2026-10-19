@@ -557,23 +557,33 @@
 
 .page2-reopen-note-btn {
   position: absolute;
-  top: 16px;
-  right: 20px;
+  top: 14px;
+  right: 16px;
+  bottom: auto !important;
+  left: auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: 36px !important;
   z-index: 25;
-  background: rgba(250, 245, 235, 0.92);
-  border: 1px solid rgba(160, 130, 95, 0.4);
+  background: rgba(250, 245, 235, 0.94);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(160, 130, 95, 0.45);
   border-radius: 20px;
   padding: 5px 14px;
   font-family: var(--font-serif);
   font-size: 0.82rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
+  font-weight: 600;
   color: var(--ink-secondary);
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: all 0.25s ease;
+  white-space: nowrap;
+  user-select: none;
 }
 
 .page2-reopen-note-btn:hover {
@@ -582,5 +592,282 @@
   border-color: rgba(140, 105, 70, 0.65);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* ==========================================================================
+   POV VIDEO POPUP STYLES ("( this you on my POV ) 🥺❤️")
+   ========================================================================== */
+
+.pov-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 8, 6, 0.55);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 16px;
+}
+
+.pov-popup-card {
+  position: relative;
+  width: min(440px, 92vw);
+  max-width: 95%;
+  max-height: min(720px, 90vh);
+  background-color: #faf4e8;
+  background-image: url('/images/popup-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(185, 150, 105, 0.65);
+  border-radius: 16px;
+  padding: clamp(32px, 5vh, 44px) clamp(16px, 3.5vw, 24px) clamp(24px, 4vh, 32px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.35),
+    0 25px 60px -10px rgba(20, 15, 10, 0.7),
+    inset 0 0 40px rgba(180, 140, 95, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.pov-popup-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(160, 130, 95, 0.4);
+  color: var(--ink-secondary);
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.pov-popup-close-btn:hover {
+  background-color: #ffffff;
+  color: var(--ink-primary);
+  border-color: rgba(130, 95, 60, 0.8);
+  transform: scale(1.06);
+}
+
+.pov-popup-tag {
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 2.2vw, 1.12rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-primary);
+  margin-bottom: 6px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  border: 1px solid rgba(180, 145, 100, 0.35);
+}
+
+.pov-popup-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+  color: var(--ink-secondary);
+  margin: 0 0 16px 0;
+  line-height: 1.45;
+  max-width: 340px;
+}
+
+.pov-video-container {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #110e0c;
+  box-shadow: 
+    0 10px 28px -5px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(220, 185, 135, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pov-video-player-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.pov-video-element {
+  width: 100%;
+  max-height: 330px;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+.pov-youtube-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 ratio */
+  height: 0;
+  overflow: hidden;
+}
+
+.pov-iframe-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.pov-video-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 18px;
+  color: #f7f1e6;
+  text-align: center;
+  background: radial-gradient(circle at center, #2e241c 0%, #15100c 100%);
+  width: 100%;
+  min-height: 200px;
+}
+
+.pov-placeholder-icon {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+.pov-placeholder-text {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #f1dfc3;
+  margin: 0 0 8px 0;
+}
+
+.pov-placeholder-hint {
+  font-size: 0.8rem;
+  color: rgba(220, 205, 185, 0.7);
+  margin: 0 0 14px 0;
+}
+
+.pov-placeholder-hint code {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #e5b975;
+  font-family: monospace;
+}
+
+.pov-choose-file-btn {
+  background: rgba(215, 175, 120, 0.22);
+  border: 1px solid rgba(215, 175, 120, 0.5);
+  border-radius: 20px;
+  color: #faebd7;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.pov-choose-file-btn:hover {
+  background: rgba(215, 175, 120, 0.38);
+  border-color: #ffd89b;
+  transform: translateY(-1px);
+}
+
+.pov-popup-caption {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--ink-primary);
+  margin: 0 0 16px 0;
+  letter-spacing: 0.02em;
+}
+
+.pov-popup-continue-btn {
+  background: linear-gradient(135deg, #3d3027 0%, #291f19 100%);
+  color: #f7f1e6;
+  border: 1px solid rgba(200, 165, 115, 0.45);
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 28px;
+  cursor: pointer;
+  box-shadow: 
+    0 3px 12px rgba(40, 30, 20, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transition: all 0.25s ease;
+}
+
+.pov-popup-continue-btn:hover {
+  background: linear-gradient(135deg, #4f3f33 0%, #352922 100%);
+  border-color: rgba(225, 190, 135, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 5px 16px rgba(40, 30, 20, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Surprise POV Video Pill Button in ClosedScene */
+.pov-reopen-pill-btn {
+  background: linear-gradient(135deg, rgba(62, 48, 36, 0.95) 0%, rgba(36, 26, 19, 0.98) 100%);
+  border: 1px solid rgba(215, 175, 120, 0.55);
+  border-radius: 28px;
+  padding: 9px 22px;
+  color: #f7efe1;
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.35),
+    0 0 12px rgba(215, 175, 120, 0.2);
+  transition: all 0.25s ease;
+  animation: povPulse 3s ease-in-out infinite;
+}
+
+.pov-reopen-pill-btn:hover {
+  background: linear-gradient(135deg, rgba(78, 60, 45, 0.98) 0%, rgba(48, 35, 25, 1) 100%);
+  border-color: rgba(245, 205, 150, 0.85);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 
+    0 6px 22px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(235, 195, 140, 0.4);
+}
+
+@keyframes povPulse {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 0 10px rgba(215, 175, 120, 0.15);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), 0 0 18px rgba(215, 175, 120, 0.38);
+  }
 }
 

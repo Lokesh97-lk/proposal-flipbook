@@ -73,7 +73,7 @@ export default function FirstPopup({ onClose, onPlayClick }) {
         <div className="first-message-center-content page-popup-center-content">
           {/* Delicate Tag / Title */}
           <div className="first-popup-tag page-popup-tag">
-            ✦ {popup.title || "To My Dearest"} ✦
+            ✦ {popup.title || "How to Read · வாசிக்கும் வரிசை"} ✦
           </div>
 
           {/* Main 7 Months Silence Confession Message */}
@@ -81,17 +81,41 @@ export default function FirstPopup({ onClose, onPlayClick }) {
             &ldquo;{popup.message}&rdquo;
           </p>
 
-          {/* Prompt */}
-          <p className="first-popup-prompt-text">
-            {popup.prompt || "Please click next to see what is waiting..."}
-          </p>
+          {/* Step-by-step Reading Order */}
+          {popup.orderSteps && popup.orderSteps.length > 0 && (
+            <div className="popup-reading-order-card">
+              <div className="popup-reading-order-title">
+                {popup.orderPrompt || "Please read in this special order:"}
+              </div>
 
-          {/* Action Button: NEXT → (dismisses popup to reveal letter reading action) */}
+              <div className="popup-reading-order-steps">
+                {popup.orderSteps.map((stepItem, idx) => (
+                  <div
+                    key={idx}
+                    className={`popup-reading-step-row ${stepItem.isFinal ? 'step-row-final' : ''}`}
+                  >
+                    <span className={`popup-step-badge ${stepItem.isFinal ? 'badge-final' : ''}`}>
+                      {stepItem.step}
+                    </span>
+                    <span className="popup-step-icon">{stepItem.symbol}</span>
+                    <div className="popup-step-info">
+                      <span className="popup-step-name">{stepItem.title}</span>
+                      {stepItem.tamilTitle && (
+                        <span className="popup-step-tamil"> · {stepItem.tamilTitle}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Action Button: CONTINUE READING → */}
           <button
             className="first-popup-next-btn page-popup-continue-btn"
             onClick={handleDismiss}
           >
-            {popup.buttonLabel || "NEXT →"}
+            {popup.buttonLabel || "CONTINUE READING →"}
           </button>
 
           {/* Tamil transliteration note */}

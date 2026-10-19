@@ -5,6 +5,8 @@ import useAudio from './hooks/useAudio';
 import IntroCover from './components/Intro/IntroCover';
 import OpeningAnimation from './components/Opening/OpeningAnimation';
 import OpenedPaperScene from './components/Intro/OpenedPaperScene';
+import StoryIndex from './components/Index/StoryIndex';
+import BookExperience from './components/Book/BookExperience';
 import Flipbook from './components/Flipbook/Flipbook';
 import FinalPage from './components/Final/FinalPage';
 import ClosingAnimation from './components/Closing/ClosingAnimation';
@@ -25,8 +27,9 @@ export default function App() {
     }
   });
 
-  // Experience sequence: 'intro' | 'opening' | 'opened-scene' | 'flipbook' | 'final' | 'closing' | 'closed'
+  // Experience sequence: 'intro' | 'opening' | 'opened-scene' | 'index' | 'book' | 'flipbook' | 'final' | 'closing' | 'closed'
   const [experienceState, setExperienceState] = useState('intro');
+  const [selectedBookId, setSelectedBookId] = useState('my-moon');
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
@@ -52,12 +55,29 @@ export default function App() {
     setExperienceState('opened-scene');
   }, []);
 
-  // 3. User closes first popup and clicks "READ MY LETTER →" -> transitions to flipbook Page 1
+  // 3. User closes first popup and clicks "NEXT →" -> transitions to Story Index
   const handleStartReading = useCallback(() => {
     playPageTurn();
-    setCurrentPage(1);
-    setExperienceState('flipbook');
+    setExperienceState('index');
   }, [playPageTurn]);
+
+  // Select a book from the Index
+  const handleSelectBook = useCallback((bookId) => {
+    setSelectedBookId(bookId);
+    setExperienceState('book');
+  }, []);
+
+  // Return to the Index from any book
+  const handleReturnToIndex = useCallback(() => {
+    playPaperFold();
+    setExperienceState('index');
+  }, [playPaperFold]);
+
+  // Re-read first note / intro popup
+  const handleReReadIntro = useCallback(() => {
+    playClick();
+    setExperienceState('opened-scene');
+  }, [playClick]);
 
   // Flipbook page navigation
   const handleNextPage = useCallback(() => {
@@ -205,7 +225,29 @@ export default function App() {
           />
         )}
 
-        {/* STAGE 5: SIX CONTENT PAGES FLIPBOOK */}
+        {/* STAGE 5: STORY INDEX (Collection of 4 Romantic Books) */}
+        {experienceState === 'index' && (
+          <StoryIndex
+            onSelectBook={handleSelectBook}
+            onReReadIntro={handleReReadIntro}
+            onPlayClick={playClick}
+          />
+        )}
+
+        {/* STAGE 6: SEPARATE READABLE BOOK EXPERIENCE */}
+        {experienceState === 'book' && (
+          <BookExperience
+            key={selectedBookId}
+            bookId={selectedBookId}
+            onReturnToIndex={handleReturnToIndex}
+            onOpenFinalMessage={handleFinishLetter}
+            onPlayPageTurn={playPageTurn}
+            onPlayPaperOpen={playPaperOpen}
+            onPlayClick={playClick}
+          />
+        )}
+
+        {/* STANDALONE FLIPBOOK (Preserved for backwards compatibility) */}
         {experienceState === 'flipbook' && (
           <Flipbook
             currentPage={currentPage}
@@ -218,15 +260,16 @@ export default function App() {
           />
         )}
 
-        {/* STAGE 6: FINAL PERSONAL MESSAGE */}
+        {/* STAGE 7: FINAL PERSONAL MESSAGE */}
         {experienceState === 'final' && (
           <FinalPage
             onCloseLetter={handleCloseLetter}
             onPlayClick={playClick}
+            onReturnToIndex={handleReturnToIndex}
           />
         )}
 
-        {/* STAGE 7: PHYSICAL CLOSING ANIMATION (Reverse 3D fold) */}
+        {/* STAGE 8: PHYSICAL CLOSING ANIMATION (Reverse 3D fold) */}
         {experienceState === 'closing' && (
           <ClosingAnimation
             onComplete={handleClosingFinished}
@@ -234,11 +277,12 @@ export default function App() {
           />
         )}
 
-        {/* STAGE 8: CLOSED PAPER RESTING QUIETLY */}
+        {/* STAGE 9: CLOSED PAPER RESTING QUIETLY */}
         {experienceState === 'closed' && (
           <ClosedScene
             onReopen={handleReplay}
             onPlaySound={playClick}
+            onReturnToIndex={handleReturnToIndex}
           />
         )}
       </section>

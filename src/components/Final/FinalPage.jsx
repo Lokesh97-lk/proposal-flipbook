@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { finalMessageData } from '../../data/finalMessage';
 
-export default function FinalPage({ onCloseLetter, onPlayClick }) {
+export default function FinalPage({ onCloseLetter, onPlayClick, onReturnToIndex }) {
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -118,7 +118,7 @@ export default function FinalPage({ onCloseLetter, onPlayClick }) {
           </div>
 
           {/* Discreet CLOSE THE LETTER Control */}
-          <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
             <button
               className="close-letter-btn"
               onClick={handleClose}
@@ -127,6 +127,34 @@ export default function FinalPage({ onCloseLetter, onPlayClick }) {
               <span className="close-btn-icon" style={{ fontSize: '1rem', marginRight: '6px' }}>✉</span>
               <span>{finalMessageData.closeButtonText || "CLOSE THE LETTER"}</span>
             </button>
+
+            {onReturnToIndex && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (onPlayClick) onPlayClick();
+                  onReturnToIndex();
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '0.78rem',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'var(--ink-muted)',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  opacity: 0.8,
+                  transition: 'color 0.2s ease, opacity 0.2s ease'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = 'var(--ink-primary)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.8'; e.currentTarget.style.color = 'var(--ink-muted)'; }}
+                aria-label="Return to library collection"
+              >
+                ← RETURN TO LIBRARY / பொருளடக்கம்
+              </button>
+            )}
           </div>
         </div>
       </div>

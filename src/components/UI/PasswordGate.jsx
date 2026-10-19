@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { introData } from '../../data/intro';
-import FlowerWordAnimation from '../Intro/FlowerWordAnimation';
 
 export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
   const gateConfig = introData.passwordGate || {
@@ -19,12 +18,10 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
   const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showWelcomePrompt, setShowWelcomePrompt] = useState(false);
 
   const containerRef = useRef(null);
   const cardRef = useRef(null);
   const sealRef = useRef(null);
-  const welcomePromptRef = useRef(null);
   const inputRefs = useRef([]);
 
   // Auto-focus first input on mount & entrance animation
@@ -142,7 +139,7 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
         onPlayClick();
       }
 
-      // Smoothly transition into the Flower Word Animation section
+      // Smoothly unlock and transition directly into the letter experience
       if (cardRef.current && containerRef.current) {
         gsap.timeline()
           .to(cardRef.current, {
@@ -150,6 +147,7 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
             y: -10,
             opacity: 0,
             duration: 0.45,
+            delay: 0.4,
             ease: 'power2.in'
           })
           .to(containerRef.current, {
@@ -157,13 +155,17 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
             duration: 0.35,
             ease: 'power2.in',
             onComplete: () => {
-              setShowWelcomePrompt(true);
-              setIsSubmitting(false);
+              try {
+                sessionStorage.setItem('proposal_flipbook_unlocked', 'true');
+              } catch (e) {}
+              onUnlock();
             }
           });
       } else {
-        setShowWelcomePrompt(true);
-        setIsSubmitting(false);
+        try {
+          sessionStorage.setItem('proposal_flipbook_unlocked', 'true');
+        } catch (e) {}
+        onUnlock();
       }
 
     } else {
@@ -176,7 +178,7 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
         inputRefs.current[0]?.focus();
       }, 100);
     }
-  }, [gateConfig, onPlayUnlock, onPlayClick]);
+  }, [gateConfig, onPlayUnlock, onPlayClick, onUnlock]);
 
   // Shake animation on error
   const triggerShake = () => {
@@ -198,40 +200,20 @@ export default function PasswordGate({ onUnlock, onPlayUnlock, onPlayClick }) {
     }
   };
 
-  // Complete unlock and proceed to letter
-  const handleProceed = () => {
-    if (onPlayClick) onPlayClick();
-    try {
-      sessionStorage.setItem('proposal_flipbook_unlocked', 'true');
-    } catch (e) {}
-    onUnlock();
-  };
-
   // Auto-validate once all 4 digits are filled
   useEffect(() => {
     const fullCode = digits.join('');
-    if (fullCode.length === 4 && !isSuccess && !isSubmitting && !showWelcomePrompt) {
+    if (fullCode.length === 4 && !isSuccess && !isSubmitting) {
       handleValidate(fullCode);
     }
-  }, [digits, isSuccess, isSubmitting, showWelcomePrompt, handleValidate]);
+  }, [digits, isSuccess, isSubmitting, handleValidate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isSubmitting && !showWelcomePrompt) {
+    if (!isSubmitting) {
       handleValidate(digits.join(''));
     }
   };
-
-  if (showWelcomePrompt) {
-    return (
-      <FlowerWordAnimation
-        onProceed={handleProceed}
-        onPlayClick={onPlayClick}
-        promptTitle="welcome to explore my random night toughts on you"
-        promptByline="drafted by nights"
-      />
-    );
-  }
 
   return (
     <div

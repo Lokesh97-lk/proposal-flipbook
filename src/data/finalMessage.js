@@ -27,7 +27,21 @@ export const finalMessageData = {
 
   // Discreet control to physically fold the letter back
   closeButtonText: "CLOSE THE LETTER",
-  reopenButtonText: "OPEN THE LETTER AGAIN"
+  reopenButtonText: "OPEN THE LETTER AGAIN",
+
+  // POV Video Popup (Appears as a surprise after the letter is closed)
+  povVideoPopup: {
+    enabled: true,
+    tag: "( this you on my POV ) 🥺❤️",
+    title: "( this you on my POV ) 🥺❤️",
+    subtitle: "A glimpse of you through my eyes...",
+    // Put your video at public/video/pov.mp4 or specify a path / YouTube link below
+    videoSrc: "/video/pov.mp4",
+    youtubeUrl: "",
+    caption: "Forever my favorite view ✨",
+    closeButtonText: "CLOSE",
+    reopenButtonText: "( this you on my POV ) 🥺❤️"
+  }
 };
 
 export default finalMessageData;

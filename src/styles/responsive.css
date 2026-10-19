@@ -47,9 +47,23 @@
   }
 
   .first-popup-confession-text {
-    font-size: 1.1rem !important;
-    line-height: 1.55 !important;
-    margin-bottom: 8px !important;
+    font-size: 0.95rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .popup-reading-order-card {
+    padding: 8px 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .popup-reading-step-row {
+    padding: 3px 6px !important;
+    gap: 6px !important;
+  }
+
+  .popup-step-info {
+    font-size: 0.78rem !important;
   }
 
   .first-popup-prompt-text {
@@ -94,6 +108,28 @@
     font-size: 0.75rem !important;
     letter-spacing: 0.12em !important;
   }
+
+  .pov-popup-card {
+    width: 92vw !important;
+    padding: 36px 14px 24px !important;
+  }
+
+  .pov-video-element {
+    max-height: 280px !important;
+  }
+
+  .pov-reopen-pill-btn {
+    font-size: 0.85rem !important;
+    padding: 8px 18px !important;
+  }
+
+  .page2-reopen-note-btn {
+    top: 10px !important;
+    right: 12px !important;
+    padding: 4px 10px !important;
+    font-size: 0.75rem !important;
+    max-height: 30px !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -105,6 +141,19 @@
   .page-popup-card,
   .first-popup-card {
     padding: 32px 14px !important;
+  }
+
+  .pov-popup-card {
+    width: 94vw !important;
+    padding: 32px 12px 20px !important;
+  }
+
+  .pov-video-element {
+    max-height: 240px !important;
+  }
+
+  .pov-popup-tag {
+    font-size: 0.92rem !important;
   }
 
   .page-popup-tamil-text {
